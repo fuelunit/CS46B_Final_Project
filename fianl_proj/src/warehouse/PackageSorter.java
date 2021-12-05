@@ -7,9 +7,11 @@
  */
 package warehouse;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Queue;
+import java.util.TreeSet;
 
 /**
  * @author Yipeng Liu
@@ -119,11 +121,6 @@ public class PackageSorter implements Queue<Package> {
 		return root;
 	}
 	
-	public boolean contains(Package data) {
-		if(find(data) == null) {return false;}
-		else {return true;}
-	}
-	
 	public BSTNode<Package> find(Package key) {
 		return recursiveFind(root,key);
 	}
@@ -149,29 +146,57 @@ public class PackageSorter implements Queue<Package> {
 		// Add more.
 		return bst;
 	}
-
+	
+	/**
+	 * Return the number of packages in the tree of the PackageSorter
+	 */
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.sizeRecurse(this.root);
+	}
+	
+	/**
+	 * A recursive helper method to count the nodes in the tree (pre-order)
+	 * @param node
+	 * @return
+	 */
+	private int sizeRecurse(BSTNode<Package> node) {
+		if (node == null) {
+			return 0;
+		}
+		return 1+this.sizeRecurse(node.leftChild) + this.sizeRecurse(node.rightChild);
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.size() == 0;
 	}
 
 	@Override
 	public boolean contains(Object o) {
-		// TODO Auto-generated method stub
-		return false;
+		if(find((Package) o) == null) {return false;}
+		else {return true;}
+	}
+	
+	/**
+	 * A recursive helper method that populates an ArrayList with an in-order traversal.
+	 * @param list
+	 * @param node
+	 */
+	private void collectToList(ArrayList<Package> list, BSTNode<Package> node) {
+		if (node == null) {
+			return;
+		}
+		this.collectToList(list, node.leftChild);
+		list.add(node.data);
+		this.collectToList(list, node.rightChild);
 	}
 
 	@Override
 	public Iterator<Package> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Package> packages = new ArrayList<Package>();
+		this.collectToList(packages, this.root);
+		return packages.listIterator();
 	}
 
 	@Override
@@ -263,8 +288,18 @@ public class PackageSorter implements Queue<Package> {
 	 */
 	@Override
 	public String toString() {
-		return recursiveToString("Tree: ", root, "");		
-	}	
+		StringBuilder result = new StringBuilder();
+		if(!this.isEmpty()) {
+			for (Package p : this) {
+				result.append(p);
+			}
+		}
+		return result.toString();
+	}
+	
+	public String toStringPreOrder() {
+		return recursiveToString("Tree: ", root, "");
+	}
 	
 	/**
 	 * 
@@ -299,6 +334,7 @@ public class PackageSorter implements Queue<Package> {
 		Package package7 = new Package("pants", "San Diego", "2022-02-07");
 		Package package8 = new Package("socks", "San Diego", "2022-02-09");
 		Package package9 = new Package("shoes", "San Francisco", "2022-01-23");
+		Package package10 = new Package("iPad", "San Francisco", "2022-01-23");
 		
 		PackageSorter ps = new PackageSorter();
 		
@@ -311,6 +347,7 @@ public class PackageSorter implements Queue<Package> {
 		ps.insert(package7);
 		ps.insert(package8);
 		ps.insert(package9);
+		ps.insert(package10);
 		
 		System.out.println("test insert()");
 		System.out.println(ps);
@@ -322,6 +359,5 @@ public class PackageSorter implements Queue<Package> {
 		ps.delete(package1);
 		System.out.println("test delete()");
 		System.out.println(ps);
-		
 	}
 }
