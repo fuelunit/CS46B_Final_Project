@@ -13,6 +13,7 @@ import java.util.Iterator;
 /**
  * A package that arrives at the warehouse.
  * @author Yipeng Liu
+ * @author Bufan Zhou
  * 
  * @see LocalDate
  */
