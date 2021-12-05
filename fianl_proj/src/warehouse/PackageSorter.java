@@ -30,14 +30,22 @@ public class PackageSorter implements Queue<Package> {
 	private BSTNode<Package> root;
 	
 	/**
-	 * 
+	 * Constructor
+	 */
+	public PackageSorter() {
+		// TODO Auto-generated constructor stub
+		this.root = null;
+	}
+	
+	/**
+	 * Inserts the data to the tree
 	 */
 	public void insert(Package data) {
 		root = recursiveInsert(root, data);
 	}
 	
 	/**
-	 * 
+	 * A private helper method to recursively insert the data into the tree.
 	 */
 	public BSTNode<Package> recursiveInsert(BSTNode<Package> node,Package data) {
 		if (node == null) 
@@ -51,9 +59,95 @@ public class PackageSorter implements Queue<Package> {
 	
 	/**
 	 * 
+	 * @param data
 	 */
-	public PackageSorter() {
-		// TODO Auto-generated constructor stub
+	public void delete(Package data) {
+		this.root = this.recursiveDelete(data, this.root);
+	}
+	
+	/**
+	 * A private helper method that recursively deletes the data from the tree.
+	 * @param data
+	 * @param node
+	 * @return
+	 */
+	private BSTNode<Package> recursiveDelete(Package data, BSTNode<Package> node) {
+		if (node == null) {
+			return null;
+		} else if (data.compareTo(node.data) < 0) {
+			node.leftChild = this.recursiveDelete(data, node.leftChild);
+		} else if (data.compareTo(node.data) > 0) {
+			node.rightChild = this.recursiveDelete(data, node.rightChild);
+		} else { // data.equals(node.data)
+			if (node.leftChild == null && node.rightChild == null) {
+				return null;
+			} else if (node.leftChild == null) {
+				return node.rightChild;
+			} else if (node.rightChild == null) {
+				return node.leftChild;
+			} else {
+				BSTNode<Package> leftMax = this.getMax(node.leftChild);
+				Package tempData = leftMax.data;
+				node.data = tempData;
+				node.leftChild = this.recursiveDelete(tempData, node.leftChild);
+			}
+		}
+		return node;
+	}
+	
+	/**
+	 * Returns the node with the maximum data starting with a root node.
+	 * @param root
+	 * @return
+	 */
+	public BSTNode<Package> getMax(BSTNode<Package> root) {
+		while (root.rightChild != null) {
+			root = root.rightChild;
+		}
+		return root;
+	}
+	
+	/**
+	 * Returns the node with the minimum data starting with a root node.
+	 * @param root
+	 * @return
+	 */
+	public BSTNode<Package> getMin(BSTNode<Package> root) {
+		while (root.leftChild != null) {
+			root = root.leftChild;
+		}
+		return root;
+	}
+	
+	public boolean contains(Package data) {
+		if(find(data) == null) {return false;}
+		else {return true;}
+	}
+	
+	public BSTNode<Package> find(Package key) {
+		return recursiveFind(root,key);
+	}
+	
+	private BSTNode<Package> recursiveFind(BSTNode<Package> node, Package key) {
+		if (node == null || node.data.equals(key)) {
+			return node;
+		} else if (key.compareTo(node.data) < 0) {
+			return this.recursiveFind(node.leftChild, key);
+		} else if (key.compareTo(node.data) > 0) {
+			return this.recursiveFind(node.rightChild, key);
+		} else {
+			return node;
+		}
+	}
+	
+	/**
+	 * This method creates a test tree that can be used for testing.
+	 * @return
+	 */
+	public static PackageSorter testSortor(){
+		PackageSorter bst = new PackageSorter();
+		// Add more.
+		return bst;
 	}
 
 	@Override
