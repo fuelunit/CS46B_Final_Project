@@ -290,6 +290,38 @@ public class PackageSorter implements Queue<Package> {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+		Package package1 = new Package("apples", "San Jose", "2022-02-11");
+		Package package2 = new Package("bananas", "San Jose", "2022-03-04");
+		Package package3 = new Package("pears", "Los Angeles", "2022-01-02");
+		Package package4 = new Package("pork", "Los Angeles", "2022-03-13");
+		Package package5 = new Package("chicken", "New York", "2022-01-07");
+		Package package6 = new Package("rice", "New York", "2022-01-01");
+		Package package7 = new Package("pants", "San Diego", "2022-02-07");
+		Package package8 = new Package("socks", "San Diego", "2022-02-09");
+		Package package9 = new Package("shoes", "San Francisco", "2022-01-23");
+		
+		PackageSorter ps = new PackageSorter();
+		
+		ps.insert(package1);
+		ps.insert(package2);
+		ps.insert(package3);
+		ps.insert(package4);
+		ps.insert(package5);
+		ps.insert(package6);
+		ps.insert(package7);
+		ps.insert(package8);
+		ps.insert(package9);
+		
+		System.out.println("test insert()");
+		System.out.println(ps);
+		
+		ps.delete(package7);
+		System.out.println("test delete()");
+		System.out.println(ps);
+		
+		ps.delete(package1);
+		System.out.println("test delete()");
+		System.out.println(ps);
+		
 	}
 }
