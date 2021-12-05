@@ -3,6 +3,7 @@
  * Class   : CS 46B
  * Project : Final Project: worked example for BST
  * Date    : 12/04/2021
+ * Resources used: Lecture 22 BST lecture code example
  */
 package warehouse;
 
@@ -16,7 +17,17 @@ import java.util.Queue;
  *
  */
 public class PackageSorter implements Queue<Package> {
+	private static class BSTNode<T extends Comparable<T>>{
+		private T data;
+		private BSTNode<T> leftChild;
+		private BSTNode<T> rightChild;
+		
+		public BSTNode(T data) {
+			this.data = data;
+		}
+	}
 	
+	private BSTNode<Package> root;
 	/**
 	 * 
 	 */
@@ -132,6 +143,32 @@ public class PackageSorter implements Queue<Package> {
 		return null;
 	}
 	
+	/**
+	 * 
+	 */
+	@Override
+	public String toString() {
+		return recursiveToString("Tree: ", root, "");		
+	}	
+	
+	/**
+	 * 
+	 * @param s
+	 * @param node
+	 * @param indent
+	 * @return
+	 */
+	private String recursiveToString(String s,  
+			BSTNode<Package> node, String indent) {
+		if(node != null) {
+			s += "\n" + indent + node.data;
+			indent += "  ";
+		
+			s = recursiveToString(s, node.leftChild, indent);
+			s = recursiveToString(s, node.rightChild, indent);
+		}
+		return s;
+	}
 
 	/**
 	 * @param args
